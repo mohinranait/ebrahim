@@ -1,11 +1,11 @@
 "use client";
 import { adminLeftMenus } from "@/constant/data";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Database, Home, LogOut } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { apiRequest, useApi } from "@/hooks/useApi";
 import { TProject } from "@/types/project.type";
 import { TSkill } from "@/types/skills.type";
@@ -15,11 +15,23 @@ type PropTypes = {
   children: React.ReactNode;
 };
 const AdminDashboardLayout = ({ children }: PropTypes) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const pathName = usePathname();
+
   const router = useRouter();
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
     router.push("/admin");
   };
+
+  useEffect(() => {
+    const auth = localStorage.getItem("adminAuth");
+    if (auth === "true") {
+      setIsAuthenticated(true);
+    } else {
+      router.push("/admin");
+    }
+  }, [router]);
 
   const handleSeedDatabase = async () => {
     const result = await apiRequest("/api/seed", { method: "POST" });
@@ -54,6 +66,10 @@ const AdminDashboardLayout = ({ children }: PropTypes) => {
     }
   };
 
+  if (!isAuthenticated) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900">
       {/* Sidebar */}
@@ -71,7 +87,7 @@ const AdminDashboardLayout = ({ children }: PropTypes) => {
                 key={item.label}
                 whileHover={{ x: 4 }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-200 ${
-                  item.active
+                  pathName === item?.link
                     ? "bg-blue-600 text-white"
                     : "text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-gray-700/20"
                 }`}

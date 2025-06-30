@@ -10,14 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+
 import { Button } from "../ui/button";
 import ProjectForm from "../forms/project-form";
 import { Badge } from "../ui/badge";
@@ -115,7 +108,7 @@ const ProjectSectionAdmin = () => {
                       {stat.value}
                     </p>
                   </div>
-                  <stat.icon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  <stat.icon className="h-8 w-8 text-white" />
                 </div>
               </CardContent>
             </Card>
@@ -135,39 +128,13 @@ const ProjectSectionAdmin = () => {
                 Manage your portfolio projects
               </CardDescription>
             </div>
-            <Dialog
-              open={isProjectDialogOpen}
-              onOpenChange={setIsProjectDialogOpen}
+            <Button
+              onClick={() => setIsProjectDialogOpen(true)}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
             >
-              <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Project
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl">
-                <DialogHeader>
-                  <DialogTitle>
-                    {editingProject ? "Edit Project" : "Add New Project"}
-                  </DialogTitle>
-                  <DialogDescription>
-                    {editingProject
-                      ? "Update project details"
-                      : "Create a new project for your portfolio"}
-                  </DialogDescription>
-                </DialogHeader>
-                <ProjectForm
-                  project={editingProject}
-                  onSubmit={
-                    editingProject ? handleEditProject : handleAddProject
-                  }
-                  onCancel={() => {
-                    setEditingProject(null);
-                    setIsProjectDialogOpen(false);
-                  }}
-                />
-              </DialogContent>
-            </Dialog>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Project
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -230,6 +197,16 @@ const ProjectSectionAdmin = () => {
           )}
         </CardContent>
       </Card>
+
+      <ProjectForm
+        project={editingProject}
+        onSubmit={editingProject ? handleEditProject : handleAddProject}
+        onCancel={() => {
+          setEditingProject(null);
+          setIsProjectDialogOpen(false);
+        }}
+        isOpen={isProjectDialogOpen}
+      />
     </>
   );
 };

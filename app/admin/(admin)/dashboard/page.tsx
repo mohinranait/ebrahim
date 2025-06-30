@@ -235,37 +235,13 @@ const DashboardPage = () => {
                     Manage your technical skills
                   </CardDescription>
                 </div>
-                <Dialog
-                  open={isSkillDialogOpen}
-                  onOpenChange={setIsSkillDialogOpen}
+                <Button
+                  onClick={() => setIsSkillDialogOpen(true)}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                 >
-                  <DialogTrigger asChild>
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Skill
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-md bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl">
-                    <DialogHeader>
-                      <DialogTitle>
-                        {editingSkill ? "Edit Skill" : "Add New Skill"}
-                      </DialogTitle>
-                      <DialogDescription>
-                        {editingSkill
-                          ? "Update skill details"
-                          : "Add a new skill to your portfolio"}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <SkillForm
-                      skill={editingSkill}
-                      onSubmit={editingSkill ? handleEditSkill : handleAddSkill}
-                      onCancel={() => {
-                        setEditingSkill(null);
-                        setIsSkillDialogOpen(false);
-                      }}
-                    />
-                  </DialogContent>
-                </Dialog>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Skill
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
@@ -340,43 +316,13 @@ const DashboardPage = () => {
                     Manage your work experience
                   </CardDescription>
                 </div>
-                <Dialog
-                  open={isExperienceDialogOpen}
-                  onOpenChange={setIsExperienceDialogOpen}
+                <Button
+                  onClick={() => setIsExperienceDialogOpen(true)}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                 >
-                  <DialogTrigger asChild>
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Experience
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-3xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl">
-                    <DialogHeader>
-                      <DialogTitle>
-                        {editingExperience
-                          ? "Edit Experience"
-                          : "Add New Experience"}
-                      </DialogTitle>
-                      <DialogDescription>
-                        {editingExperience
-                          ? "Update experience details"
-                          : "Add a new work experience"}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <ExperienceForm
-                      experience={editingExperience}
-                      onSubmit={
-                        editingExperience
-                          ? handleEditExperience
-                          : handleAddExperience
-                      }
-                      onCancel={() => {
-                        setEditingExperience(null);
-                        setIsExperienceDialogOpen(false);
-                      }}
-                    />
-                  </DialogContent>
-                </Dialog>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Experience
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
@@ -471,43 +417,13 @@ const DashboardPage = () => {
                     Manage available technologies for projects
                   </CardDescription>
                 </div>
-                <Dialog
-                  open={isTechnologyDialogOpen}
-                  onOpenChange={setIsTechnologyDialogOpen}
+                <Button
+                  onClick={() => setIsTechnologyDialogOpen(true)}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                 >
-                  <DialogTrigger asChild>
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Technology
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-md bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl">
-                    <DialogHeader>
-                      <DialogTitle>
-                        {editingTechnology
-                          ? "Edit Technology"
-                          : "Add New Technology"}
-                      </DialogTitle>
-                      <DialogDescription>
-                        {editingTechnology
-                          ? "Update technology details"
-                          : "Add a new technology"}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <TechnologyForm
-                      technology={editingTechnology}
-                      onSubmit={
-                        editingTechnology
-                          ? handleEditTechnology
-                          : handleAddTechnology
-                      }
-                      onCancel={() => {
-                        setEditingTechnology(null);
-                        setIsTechnologyDialogOpen(false);
-                      }}
-                    />
-                  </DialogContent>
-                </Dialog>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Technology
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
@@ -566,6 +482,40 @@ const DashboardPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <SkillForm
+        skill={editingSkill}
+        onSubmit={editingSkill ? handleEditSkill : handleAddSkill}
+        onCancel={() => {
+          setEditingSkill(null);
+          setIsSkillDialogOpen(false);
+        }}
+        isOpen={isSkillDialogOpen}
+      />
+
+      <ExperienceForm
+        experience={editingExperience}
+        onSubmit={
+          editingExperience ? handleEditExperience : handleAddExperience
+        }
+        onCancel={() => {
+          setEditingExperience(null);
+          setIsExperienceDialogOpen(false);
+        }}
+        isOpen={isExperienceDialogOpen}
+      />
+
+      <TechnologyForm
+        technology={editingTechnology}
+        onSubmit={
+          editingTechnology ? handleEditTechnology : handleAddTechnology
+        }
+        onCancel={() => {
+          setEditingTechnology(null);
+          setIsTechnologyDialogOpen(false);
+        }}
+        isOpen={isTechnologyDialogOpen}
+      />
     </motion.div>
   );
 };
