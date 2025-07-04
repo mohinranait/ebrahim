@@ -54,7 +54,7 @@ export function AboutSection({ personalInfo }: PropsType) {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            I'm a passionate full-stack developer with 5+ years of experience
+            I'm a passionate full-stack developer with 2+ years of experience
             building web applications. I love turning complex problems into
             simple, beautiful, and intuitive solutions.
           </p>

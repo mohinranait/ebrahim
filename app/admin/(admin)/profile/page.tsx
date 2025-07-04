@@ -21,6 +21,8 @@ const ProfielPage = () => {
       body: JSON.stringify(data),
     });
 
+    console.log({ result });
+
     if (result.success) {
       setPersonalInfo(result.data as PersonalInfo);
       alert("Personal information updated successfully!");
