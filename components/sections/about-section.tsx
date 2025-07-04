@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Code, Palette, Zap, Users, Calendar, MapPin } from "lucide-react";
 import { PersonalInfo } from "@/types/personal.type";
+import Image from "next/image";
 
 type PropsType = {
   personalInfo: PersonalInfo | null;
@@ -68,7 +69,17 @@ export function AboutSection({ personalInfo }: PropsType) {
           >
             <div className="relative">
               <div className="w-full h-96 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-2xl flex items-center justify-center">
-                <div className="text-6xl">{personalInfo?.avatar}</div>
+                {personalInfo?.avatar.startsWith("http") ? (
+                  <Image
+                    src={personalInfo?.avatar}
+                    height={150}
+                    width={150}
+                    alt="Ebrahim"
+                    className="w-[150px] h-[150px] rounded-full ring-purple-600 ring-offset-1"
+                  />
+                ) : (
+                  <div className="text-6xl">{personalInfo?.avatar}</div>
+                )}
               </div>
               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center">
                 <Code className="h-8 w-8 text-white" />

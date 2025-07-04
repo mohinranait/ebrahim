@@ -42,7 +42,8 @@ export function Navbar() {
               href="/"
               className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
             >
-              Portfolio
+              {`</>`}
+              Ebrahim
             </Link>
           </div>
 
@@ -61,7 +62,7 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Button
+            {/* <Button
               variant="ghost"
               size="icon"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -69,9 +70,9 @@ export function Navbar() {
             >
               <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            </Button>
+            </Button> */}
 
-            <Link href="/admin">
+            {/* <Link href="/admin">
               <Button
                 variant="outline"
                 size="sm"
@@ -79,7 +80,7 @@ export function Navbar() {
               >
                 Admin
               </Button>
-            </Link>
+            </Link> */}
 
             <div className="md:hidden">
               <Button
@@ -112,7 +113,7 @@ export function Navbar() {
                 {item.name}
               </a>
             ))}
-            <Link href="/admin" className="block">
+            {/* <Link href="/admin" className="block">
               <Button
                 variant="outline"
                 size="sm"
@@ -120,7 +121,7 @@ export function Navbar() {
               >
                 Admin Dashboard
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}

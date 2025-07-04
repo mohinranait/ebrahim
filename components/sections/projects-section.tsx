@@ -92,26 +92,30 @@ export function Projects() {
                     className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
-                    <Button size="sm" variant="secondary" asChild>
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Eye className="h-4 w-4 mr-2" />
-                        Live Demo
-                      </a>
-                    </Button>
-                    <Button size="sm" variant="outline" asChild>
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Github className="h-4 w-4 mr-2" />
-                        Code
-                      </a>
-                    </Button>
+                    {project?.liveUrl && (
+                      <Button size="sm" variant="secondary" asChild>
+                        <a
+                          href={project?.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          Live Demo
+                        </a>
+                      </Button>
+                    )}
+                    {project?.githubUrl && (
+                      <Button size="sm" variant="outline" asChild>
+                        <a
+                          href={project?.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github className="h-4 w-4 mr-2" />
+                          Code
+                        </a>
+                      </Button>
+                    )}
                   </div>
 
                   {project.featured && (
@@ -145,30 +149,34 @@ export function Projects() {
                   </div>
 
                   <div className="flex space-x-2 pt-4">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1 border-none bg-gradient-to-r from-purple-600 to-pink-600"
-                      asChild
-                    >
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    {project.liveUrl && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 border-none bg-gradient-to-r from-purple-600 to-pink-600"
+                        asChild
                       >
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Live Demo
-                      </a>
-                    </Button>
-                    <Button size="sm" variant="ghost" asChild>
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Github className="h-4 w-4" />
-                      </a>
-                    </Button>
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Live Demo
+                        </a>
+                      </Button>
+                    )}
+                    {project.githubUrl && (
+                      <Button size="sm" variant="ghost" asChild>
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>

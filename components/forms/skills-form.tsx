@@ -4,6 +4,8 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import GlobalModal from "../common/global-modal";
+import UploadImage from "../common/upload-image";
+import { useUploadFile } from "@/hooks/useUploadFile";
 
 export default function SkillForm({
   skill,
@@ -16,20 +18,33 @@ export default function SkillForm({
   onCancel: () => void;
   isOpen: boolean;
 }) {
+  const { uploadFile, loading, error } = useUploadFile();
+  const [file, setFile] = useState<File | null>(null);
+
   const [formData, setFormData] = useState({
     name: skill?.name || "",
     level: skill?.level || 50,
     category: skill?.category || "frontend",
     icon: skill?.icon || "Code",
+    image: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const skillData = {
       ...formData,
       ...(skill && { _id: skill._id }),
     };
-    onSubmit(skillData);
+
+    if (file) {
+      const res = await uploadFile(file);
+
+      if (res.message === "Success") {
+        skillData.image = res.url;
+      }
+    }
+
+    onSubmit({ ...skillData });
   };
 
   useEffect(() => {
@@ -104,6 +119,8 @@ export default function SkillForm({
             required
           />
         </div>
+
+        <UploadImage file={file} setFile={setFile} />
 
         <div>
           <Label htmlFor="category">Category</Label>

@@ -22,7 +22,7 @@ const ProfielPage = () => {
     });
 
     if (result.success) {
-      setPersonalInfo(result.data);
+      setPersonalInfo(result.data as PersonalInfo);
       alert("Personal information updated successfully!");
     } else {
       alert("Failed to update personal information");

@@ -38,6 +38,8 @@ import { PersonalInfo } from "@/types/personal.type";
 import ExperienceSection from "@/components/sections/experience-section";
 import { Projects } from "@/components/sections/projects-section";
 import ContactSection from "@/components/sections/contact-section";
+import Image from "next/image";
+import { TSkill } from "@/types/skills.type";
 
 const iconMap: { [key: string]: any } = {
   Code,
@@ -55,14 +57,6 @@ interface Project {
   liveUrl: string;
   githubUrl: string;
   featured: boolean;
-}
-
-interface Skill {
-  _id: string;
-  name: string;
-  level: number;
-  category: string;
-  icon: string;
 }
 
 // Add these interfaces after the existing ones
@@ -86,7 +80,7 @@ export default function Portfolio() {
   const { data: projects, loading: projectsLoading } =
     useApi<Project[]>("/api/projects");
   const { data: skills, loading: skillsLoading } =
-    useApi<Skill[]>("/api/skills");
+    useApi<TSkill[]>("/api/skills");
   const { data: personalInfo, loading: personalInfoLoading } =
     useApi<PersonalInfo>("/api/personal-info");
 
@@ -232,7 +226,7 @@ export default function Portfolio() {
         id="skills"
         className="py-20 px-4 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-gray-800/50 dark:to-purple-900/50"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -253,9 +247,10 @@ export default function Portfolio() {
           {skillsLoading ? (
             <div className="text-center">Loading skills...</div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-4 justify-center  gap-2">
               {skills?.map((skill, index) => {
-                const IconComponent = iconMap[skill.icon] || Code;
+                const IconComponent =
+                  (!skill?.image && iconMap[skill.icon]) || Code;
                 return (
                   <motion.div
                     key={skill._id}
@@ -265,24 +260,36 @@ export default function Portfolio() {
                     viewport={{ once: true }}
                     whileHover={{ scale: 1.05 }}
                   >
-                    <Card className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-300">
-                      <CardContent className="p-6 text-center">
-                        <IconComponent className="h-12 w-12 mx-auto mb-4 text-blue-600 dark:text-blue-400" />
-                        <h3 className="text-lg font-semibold mb-3 text-gray-800 dark:text-white">
-                          {skill.name}
-                        </h3>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.level}%` }}
-                            transition={{ duration: 1, delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full"
-                          ></motion.div>
+                    <Card className="bg-white/20 !pr-2 p-0 dark:bg-gray-800/20 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-300">
+                      <CardContent className="p-0 flex gap-2 items-center text-center">
+                        <div className="">
+                          <div className="w-[60px]  h-[60px] flex items-center justify-center ">
+                            {skill?.image ? (
+                              <Image
+                                src={skill?.image}
+                                width={50}
+                                height={50}
+                                alt={skill?.name}
+                                className="w-[50px] h-[50px] rounded-md p-[2px] ring-1 ring-purple-400"
+                              />
+                            ) : (
+                              <span className="w-[50px] h-[50px] rounded-md p-[2px] ring-1 ring-purple-400 flex items-center justify-center">
+                                <IconComponent className="  text-white" />
+                              </span>
+                            )}
+                          </div>
                         </div>
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
-                          {skill.level}%
-                        </span>
+                        <div>
+                          <h3 className="text-base text-left font-semibold text-white">
+                            {skill.name}
+                          </h3>
+                          <p className="text-sm  capitalize text-gray-400">
+                            For: {skill.category}
+                          </p>
+                          {/* <span className="text-sm text-gray-600 dark:text-gray-300">
+                            {skill.level}%
+                          </span> */}
+                        </div>
                       </CardContent>
                     </Card>
                   </motion.div>

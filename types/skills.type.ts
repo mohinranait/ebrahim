@@ -4,4 +4,5 @@ export interface TSkill {
   level: number;
   category: string;
   icon: string;
+  image: string;
 }

@@ -15,7 +15,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     await connectDB()
-    const body = await request.json()
+    const body = await request.json()    
     const skill = await Skill.create(body)
     return NextResponse.json({ success: true, data: skill }, { status: 201 })
   } catch (error) {

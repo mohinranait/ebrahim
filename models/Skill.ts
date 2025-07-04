@@ -21,6 +21,9 @@ const SkillSchema = new mongoose.Schema(
       type: String,
       default: "Code",
     },
+    image: {
+      type: String,
+    },
     order: {
       type: Number,
       default: 0,

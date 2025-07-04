@@ -18,7 +18,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Edit, Plus, Trash2 } from "lucide-react";
+import {
+  Code,
+  Database,
+  Edit,
+  Plus,
+  Server,
+  Smartphone,
+  Trash2,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { apiRequest, useApi } from "@/hooks/useApi";
 import { TSkill } from "@/types/skills.type";
@@ -28,7 +36,14 @@ import { Technology } from "@/types/techonology.type";
 import ExperienceForm from "@/components/forms/exprience-form";
 import TechnologyForm from "@/components/forms/techonology-form";
 import ProjectSectionAdmin from "@/components/common/project-section-admin";
+import Image from "next/image";
 
+const iconMap: { [key: string]: any } = {
+  Code,
+  Server,
+  Database,
+  Smartphone,
+};
 const DashboardPage = () => {
   const {
     data: skills,
@@ -249,54 +264,77 @@ const DashboardPage = () => {
                 <div className="text-center py-8">Loading skills...</div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-4">
-                  {skills?.map((skill) => (
-                    <motion.div
-                      key={skill._id}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="p-4 rounded-lg bg-white/10 dark:bg-gray-700/10 border border-white/20 dark:border-gray-600/20"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold text-gray-800 dark:text-white">
-                          {skill.name}
-                        </h3>
-                        <div className="flex items-center space-x-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setEditingSkill(skill);
-                              setIsSkillDialogOpen(true);
-                            }}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteSkill(skill._id)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                  {skills?.map((skill) => {
+                    const IconComponent =
+                      (!skill.icon && iconMap[skill.icon]) || Code;
+                    return (
+                      <motion.div
+                        key={skill._id}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="p-4 rounded-lg bg-white/10 dark:bg-gray-700/10 border border-white/20 dark:border-gray-600/20"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-semibold text-gray-800 dark:text-white">
+                            {skill.name}
+                          </h3>
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setEditingSkill(skill);
+                                setIsSkillDialogOpen(true);
+                              }}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteSkill(skill._id)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="outline" className="text-xs">
-                          {skill.category}
-                        </Badge>
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${skill.level}%` }}
-                        ></div>
-                      </div>
-                    </motion.div>
-                  ))}
+                        <div className="flex gap-3">
+                          <div className="rounded flex items-center justify-center h-[50px] w-[50px] ring-1 ring-purple-500 ">
+                            {skill?.image ? (
+                              <Image
+                                src={skill?.image}
+                                width={50}
+                                height={50}
+                                alt="image"
+                                className="rounded object-cover"
+                              />
+                            ) : (
+                              <span>
+                                <IconComponent />
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <Badge variant="outline" className="text-xs">
+                                {skill.category}
+                              </Badge>
+                              <span className="text-sm text-gray-600 dark:text-gray-300">
+                                {skill.level}%
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                              <div
+                                className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${skill.level}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               )}
             </CardContent>

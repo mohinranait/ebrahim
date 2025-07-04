@@ -5,6 +5,13 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import GlobalModal from "../common/global-modal";
+import { useUploadFile } from "@/hooks/useUploadFile";
+import UploadImage from "../common/upload-image";
+import MultiSelectDropdown, {
+  MultiSelectDropdownValues,
+} from "../common/multi-select-dropdown";
+import { useApi } from "@/hooks/useApi";
+import { Technology } from "@/types/techonology.type";
 
 export default function ProjectForm({
   project,
@@ -17,27 +24,64 @@ export default function ProjectForm({
   onCancel: () => void;
   isOpen: boolean;
 }) {
+  const { uploadFile } = useUploadFile();
+  const {
+    data: technologies,
+    loading: technologiesLoading,
+    refetch: refetchTechnologies,
+  } = useApi<Technology[]>("/api/technologies");
+
+  const getTechonologys: MultiSelectDropdownValues[] =
+    technologies?.map((tec) => ({
+      label: tec.name,
+      value: tec?.name,
+    })) || [];
+
+  const [file, setFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     title: project?.title || "",
     description: project?.description || "",
     image: project?.image || "",
-    technologies: project?.technologies.join(", ") || "",
+    technologies: project?.technologies || [],
     liveUrl: project?.liveUrl || "",
     githubUrl: project?.githubUrl || "",
     featured: project?.featured || false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const projectData = {
       ...formData,
-      technologies: formData.technologies
-        .split(",")
-        .map((tech) => tech.trim())
-        .filter((t) => t),
       ...(project && { _id: project._id }),
     };
+
+    if (file) {
+      const res = await uploadFile(file);
+
+      if (res.message === "Success") {
+        projectData.image = res.url;
+      }
+    }
+
     onSubmit(projectData);
+    resetFrom();
+  };
+
+  // Handle technology selection
+  const handleTechnologyChange = (
+    value: string[] | ((prev: string[]) => string[])
+  ) => {
+    if (typeof value === "function") {
+      setFormData((prev) => ({
+        ...prev,
+        technologies: value(prev.technologies),
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        technologies: value,
+      }));
+    }
   };
 
   useEffect(() => {
@@ -46,17 +90,32 @@ export default function ProjectForm({
       title: project?.title || "",
       description: project?.description || "",
       image: project?.image || "",
-      technologies: project?.technologies.join(", ") || "",
+      technologies: project?.technologies || [],
       liveUrl: project?.liveUrl || "",
       githubUrl: project?.githubUrl || "",
       featured: project?.featured || false,
     }));
   }, [project]);
 
+  const resetFrom = () => {
+    setFormData((prev) => ({
+      title: "",
+      description: "",
+      image: "",
+      technologies: [],
+      liveUrl: "",
+      githubUrl: "",
+      featured: false,
+    }));
+  };
+
   return (
     <GlobalModal
       open={isOpen}
-      setOpen={onCancel}
+      setOpen={() => {
+        onCancel();
+        resetFrom();
+      }}
       title={
         <div className="flex  text-white items-center gap-2">
           {project ? "Update " : "Create new "} Project
@@ -108,29 +167,14 @@ export default function ProjectForm({
           />
         </div>
 
-        <div>
-          <Label htmlFor="image">Image URL</Label>
-          <Input
-            id="image"
-            value={formData.image}
-            onChange={(e) =>
-              setFormData({ ...formData, image: e.target.value })
-            }
-            required
-          />
-        </div>
+        <UploadImage file={file} setFile={setFile} />
 
-        <div>
-          <Label htmlFor="technologies">Technologies (comma-separated)</Label>
-          <Input
-            id="technologies"
-            value={formData.technologies}
-            onChange={(e) =>
-              setFormData({ ...formData, technologies: e.target.value })
-            }
-            placeholder="React, Node.js, MongoDB"
-          />
-        </div>
+        <MultiSelectDropdown
+          label="Technologies"
+          frameworks={getTechonologys}
+          selectedValues={formData.technologies}
+          setSelectedValues={handleTechnologyChange}
+        />
 
         <div>
           <Label htmlFor="liveUrl">Live URL</Label>

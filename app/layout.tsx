@@ -1,10 +1,10 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MERN Stack Developer Portfolio | Full Stack Web Developer",
@@ -21,7 +21,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://yourportfolio.com",
     title: "MERN Stack Developer Portfolio",
-    description: "Professional MERN stack developer portfolio showcasing projects and experience",
+    description:
+      "Professional MERN stack developer portfolio showcasing projects and experience",
     siteName: "MERN Developer Portfolio",
     images: [
       {
@@ -35,22 +36,23 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "MERN Stack Developer Portfolio",
-    description: "Professional MERN stack developer portfolio showcasing projects and experience",
+    description:
+      "Professional MERN stack developer portfolio showcasing projects and experience",
     images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: "https://yourportfolio.com",
   },
-    generator: 'v0.dev'
-}
+  generator: "v0.dev",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -68,18 +70,34 @@ export default function RootLayout({
                 name: "sdb it",
               },
               url: "https://yourportfolio.com",
-              sameAs: ["https://github.com/yourusername", "https://linkedin.com/in/yourusername"],
-              knowsAbout: ["React", "Node.js", "MongoDB", "Express.js", "JavaScript", "TypeScript"],
-              description: "Professional MERN stack developer with expertise in full-stack web development",
+              sameAs: [
+                "https://github.com/yourusername",
+                "https://linkedin.com/in/yourusername",
+              ],
+              knowsAbout: [
+                "React",
+                "Node.js",
+                "MongoDB",
+                "Express.js",
+                "JavaScript",
+                "TypeScript",
+              ],
+              description:
+                "Professional MERN stack developer with expertise in full-stack web development",
             }),
           }}
         />
       </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
