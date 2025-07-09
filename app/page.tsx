@@ -40,6 +40,7 @@ import { Projects } from "@/components/sections/projects-section";
 import ContactSection from "@/components/sections/contact-section";
 import Image from "next/image";
 import { TSkill } from "@/types/skills.type";
+import { cn } from "@/lib/utils";
 
 const iconMap: { [key: string]: any } = {
   Code,
@@ -270,7 +271,10 @@ export default function Portfolio() {
                                 width={50}
                                 height={50}
                                 alt={skill?.name}
-                                className="w-[50px] h-[50px] rounded-md p-[2px] ring-1 ring-purple-400"
+                                className={cn(
+                                  "w-[50px] h-[50px] rounded-md p-[2px] ring-1 ring-purple-400",
+                                  skill?.color && `ring-[${skill?.color}]`
+                                )}
                               />
                             ) : (
                               <span className="w-[50px] h-[50px] rounded-md p-[2px] ring-1 ring-purple-400 flex items-center justify-center">

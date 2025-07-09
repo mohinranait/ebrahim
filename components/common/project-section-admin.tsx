@@ -14,6 +14,7 @@ import {
 import { Button } from "../ui/button";
 import ProjectForm from "../forms/project-form";
 import { Badge } from "../ui/badge";
+import Image from "next/image";
 
 const ProjectSectionAdmin = () => {
   // API calls
@@ -21,10 +22,11 @@ const ProjectSectionAdmin = () => {
     data: projects,
     loading: projectsLoading,
     refetch: refetchProjects,
-  } = useApi<TProject[]>("/api/projects");
+  } = useApi<TProject[]>("/api/projects?accessBy=admin");
 
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<TProject | null>(null);
+  console.log({ projects });
 
   const handleDeleteProject = async (id: string) => {
     if (confirm("Are you sure you want to delete this project?")) {
@@ -147,8 +149,17 @@ const ProjectSectionAdmin = () => {
                   key={project._id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center justify-between p-4 rounded-lg bg-white/10 dark:bg-gray-700/10 border border-white/20 dark:border-gray-600/20"
+                  className="flex gap-4 justify-between p-4 rounded-lg bg-white/10 dark:bg-gray-700/10 border border-white/20 dark:border-gray-600/20"
                 >
+                  <div className="w-[200px] max-h-[150px]">
+                    <Image
+                      src={project?.image}
+                      width={200}
+                      height={200}
+                      alt="image"
+                      className="rounded-md max-h-[130px] object-cover"
+                    />
+                  </div>
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       <h3 className="font-semibold text-gray-800 dark:text-white">
@@ -172,6 +183,9 @@ const ProjectSectionAdmin = () => {
                     </div>
                   </div>
                   <div className="flex items-center space-x-2 ml-4">
+                    <Badge variant={project.status ? "default" : "destructive"}>
+                      {project?.status ? "Active" : "Pending"}
+                    </Badge>
                     <Button
                       variant="ghost"
                       size="sm"

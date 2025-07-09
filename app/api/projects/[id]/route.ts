@@ -19,6 +19,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   try {
     await connectDB()
     const body = await request.json()
+    console.log({body});
+    
     const project = await Project.findByIdAndUpdate(params.id, body, { new: true })
     if (!project) {
       return NextResponse.json({ success: false, error: "Project not found" }, { status: 404 })

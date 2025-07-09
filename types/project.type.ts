@@ -8,4 +8,6 @@ export interface TProject {
   liveUrl: string;
   githubUrl: string;
   featured: boolean;
+  status: boolean;
+  topPriority: number;
 }

@@ -5,4 +5,6 @@ export interface TSkill {
   category: string;
   icon: string;
   image: string;
+  color: string;
+  status: boolean;
 }

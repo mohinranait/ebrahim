@@ -15,14 +15,22 @@ const SkillSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["frontend", "backend", "database", "tools", "mobile"],
+      enum: ["frontend", "backend", "database", "tools",'package', "mobile", "cloud", "testing"],
     },
     icon: {
       type: String,
       default: "Code",
     },
+    color: {
+      type : String,
+       default: "#3B82F6",
+    },
     image: {
       type: String,
+    },
+    status: {
+      type: Boolean,
+      default:false
     },
     order: {
       type: Number,

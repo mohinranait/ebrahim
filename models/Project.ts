@@ -14,6 +14,14 @@ const ProjectSchema = new mongoose.Schema(
       type: String,
       default: "/placeholder.svg?height=300&width=500",
     },
+    status:{
+      type : Boolean,
+      default: true,
+    },
+    topPriority:{
+      type : Number,
+      default: 0,
+    },
     technologies: [
       {
         type: String,
@@ -32,10 +40,7 @@ const ProjectSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    order: {
-      type: Number,
-      default: 0,
-    },
+
   },
   {
     timestamps: true,

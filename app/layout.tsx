@@ -88,15 +88,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+      <body className={` overflow-x-hidden ${inter.className}`}>
+        {children}
       </body>
     </html>
   );

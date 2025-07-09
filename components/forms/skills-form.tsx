@@ -6,6 +6,14 @@ import { Button } from "../ui/button";
 import GlobalModal from "../common/global-modal";
 import UploadImage from "../common/upload-image";
 import { useUploadFile } from "@/hooks/useUploadFile";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Image from "next/image";
 
 export default function SkillForm({
   skill,
@@ -22,12 +30,16 @@ export default function SkillForm({
   const [file, setFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
-    name: skill?.name || "",
-    level: skill?.level || 50,
-    category: skill?.category || "frontend",
-    icon: skill?.icon || "Code",
+    name: "",
+    level: 50,
+    category: "frontend",
+    icon: "Code",
     image: "",
+    color: skill?.color,
+    status: skill?.status,
   });
+
+  console.log({ skill, formData });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,24 +57,44 @@ export default function SkillForm({
     }
 
     onSubmit({ ...skillData });
+    resetForm();
   };
 
   useEffect(() => {
     if (skill) {
       setFormData((prev) => ({
         ...prev,
-        name: skill?.name || "",
-        level: skill?.level || 50,
-        category: skill?.category || "frontend",
-        icon: skill?.icon || "Code",
+        ...skill,
+        name: skill?.name,
+        level: skill?.level,
+        category: skill?.category,
+        icon: skill?.icon,
+        image: skill?.image,
+        status: skill?.status,
+        color: skill?.color,
       }));
     }
   }, [skill]);
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      level: 0,
+      category: "frontend",
+      icon: "Code",
+      image: "",
+      color: "",
+      status: true,
+    });
+  };
+
   return (
     <GlobalModal
       open={isOpen}
-      setOpen={onCancel}
+      setOpen={() => {
+        resetForm();
+        onCancel();
+      }}
       title={
         <div className="flex  text-white items-center gap-2">
           {skill ? "Update " : "Create new "} Skill
@@ -122,22 +154,77 @@ export default function SkillForm({
 
         <UploadImage file={file} setFile={setFile} />
 
+        {!file && formData?.image && (
+          <Image
+            src={formData?.image}
+            width={100}
+            height={100}
+            alt="image"
+            className="w-16 h-16 ring-1 ring-black rounded"
+          />
+        )}
         <div>
-          <Label htmlFor="category">Category</Label>
-          <select
-            id="category"
-            value={formData.category}
-            onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
-            }
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          >
-            <option value="frontend">Frontend</option>
-            <option value="backend">Backend</option>
-            <option value="database">Database</option>
-            <option value="tools">Tools</option>
-          </select>
+          <Label htmlFor="color">Color</Label>
+          <div className="flex items-center space-x-2">
+            <Input
+              id="color"
+              type="color"
+              value={formData.color}
+              onChange={(e) =>
+                setFormData({ ...formData, color: e.target.value })
+              }
+              className="w-16 h-10"
+            />
+            <Input
+              value={formData.color}
+              onChange={(e) =>
+                setFormData({ ...formData, color: e.target.value })
+              }
+              placeholder="#3B82F6"
+              className="flex-1"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="category">Category</Label>
+            <Select
+              value={formData.category}
+              onValueChange={(e) => setFormData({ ...formData, category: e })}
+            >
+              <SelectTrigger className="w-full" id="category">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="frontend">Frontend</SelectItem>
+                <SelectItem value="backend">Backend</SelectItem>
+                <SelectItem value="database">Database</SelectItem>
+                <SelectItem value="tools">Tools</SelectItem>
+                <SelectItem value="cloud">Cloud</SelectItem>
+                <SelectItem value="testing">Testing</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="status">Status</Label>
+            <Select
+              value={formData.status ? "true" : "false"}
+              onValueChange={(e) =>
+                setFormData({
+                  ...formData,
+                  status: e === "true" ? true : false,
+                })
+              }
+            >
+              <SelectTrigger className="w-full" id="status">
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Active</SelectItem>
+                <SelectItem value="false">In-active</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </form>
     </GlobalModal>

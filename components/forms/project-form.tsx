@@ -7,6 +7,13 @@ import { Button } from "../ui/button";
 import GlobalModal from "../common/global-modal";
 import { useUploadFile } from "@/hooks/useUploadFile";
 import UploadImage from "../common/upload-image";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import MultiSelectDropdown, {
   MultiSelectDropdownValues,
 } from "../common/multi-select-dropdown";
@@ -46,6 +53,8 @@ export default function ProjectForm({
     liveUrl: project?.liveUrl || "",
     githubUrl: project?.githubUrl || "",
     featured: project?.featured || false,
+    topPriority: project?.topPriority || 0,
+    status: project?.status,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,6 +71,7 @@ export default function ProjectForm({
         projectData.image = res.url;
       }
     }
+    console.log({ projectData });
 
     onSubmit(projectData);
     resetFrom();
@@ -94,6 +104,8 @@ export default function ProjectForm({
       liveUrl: project?.liveUrl || "",
       githubUrl: project?.githubUrl || "",
       featured: project?.featured || false,
+      status: project?.status || false,
+      topPriority: project?.topPriority || 0,
     }));
   }, [project]);
 
@@ -106,6 +118,8 @@ export default function ProjectForm({
       liveUrl: "",
       githubUrl: "",
       featured: false,
+      status: true,
+      topPriority: 0,
     }));
   };
 
@@ -175,6 +189,42 @@ export default function ProjectForm({
           selectedValues={formData.technologies}
           setSelectedValues={handleTechnologyChange}
         />
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="status">Status</Label>
+            <Select
+              value={formData?.status ? "true" : "false"}
+              onValueChange={(e) =>
+                setFormData({
+                  ...formData,
+                  status: e === "true" ? true : false,
+                })
+              }
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Active</SelectItem>
+                <SelectItem value="false">In-active</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="description">Priority (default 0)</Label>
+            <Input
+              id="title"
+              value={formData.topPriority}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  topPriority: Number(e.target.value),
+                })
+              }
+              required
+            />
+          </div>
+        </div>
 
         <div>
           <Label htmlFor="liveUrl">Live URL</Label>
