@@ -170,13 +170,15 @@ export default function Portfolio() {
                   MY CV
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-white/20 text-white hover:bg-white/10 bg-transparent"
-              >
-                Download CV
-              </Button>
+              <Link href={`${personalInfo?.resumeUrl}`} target="_blank">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-white/20 text-white hover:bg-white/10 bg-transparent"
+                >
+                  Download CV
+                </Button>
+              </Link>
             </div>
 
             <div className="flex justify-center space-x-6">
